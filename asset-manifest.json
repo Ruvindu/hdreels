@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/hdreels/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/hdreels/static/js/main.3fc686b4.chunk.js",
+    "main.js.map": "/hdreels/static/js/main.3fc686b4.chunk.js.map",
+    "runtime-main.js": "/hdreels/static/js/runtime-main.60d752f0.js",
+    "runtime-main.js.map": "/hdreels/static/js/runtime-main.60d752f0.js.map",
+    "static/js/2.9014473c.chunk.js": "/hdreels/static/js/2.9014473c.chunk.js",
+    "static/js/2.9014473c.chunk.js.map": "/hdreels/static/js/2.9014473c.chunk.js.map",
+    "static/js/3.7322d104.chunk.js": "/hdreels/static/js/3.7322d104.chunk.js",
+    "static/js/3.7322d104.chunk.js.map": "/hdreels/static/js/3.7322d104.chunk.js.map",
+    "index.html": "/hdreels/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "/hdreels/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.9014473c.chunk.js.LICENSE.txt": "/hdreels/static/js/2.9014473c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.60d752f0.js",
+    "static/js/2.9014473c.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.3fc686b4.chunk.js"
+  ]
+}
