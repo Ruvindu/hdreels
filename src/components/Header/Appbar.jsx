@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import Skeleton from '@mui/material/Skeleton';
+import { Divider, Stack, Menu, MenuItem, Avatar, Skeleton, IconButton, InputBase, Typography, Toolbar, AppBar } from '@mui/material';
+import GridViewIcon from '@mui/icons-material/GridView';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import Avatar from '@mui/material/Avatar';
 import LocalMoviesRoundedIcon from '@mui/icons-material/LocalMoviesRounded';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
-import { Divider, Stack } from '@mui/material';
-
 
 
 
@@ -25,6 +17,7 @@ const Appbar = () => {
 
 
   const handleClose = () => {
+    vibr();
     setAnchorEl(null);
   };
 
@@ -32,7 +25,6 @@ const Appbar = () => {
   useEffect(() => {
     setMovielist(null);
     if (searchQuery.length > 2) {
-      console.log(searchQuery);
 
       setTimeout(async () => {
         const response = await fetch(`https://yts.mx/api/v2/list_movies.json?query_term=${searchQuery}`);
@@ -42,13 +34,18 @@ const Appbar = () => {
 
     }
 
-  }, [searchQuery])
+  }, [searchQuery]);
+
+
+  const vibr = () =>{
+    navigator.vibrate(47);
+  }
 
   return (
     <AppBar position="static">
       <Toolbar>
 
-        <IconButton color='inherit' component={Link} to='/'>
+        <IconButton color='inherit' component={Link} to='/' onClick={vibr}>
           <LocalMoviesRoundedIcon />
         </IconButton>
 
@@ -56,7 +53,11 @@ const Appbar = () => {
           HD Reels
         </Typography>
 
-        <IconButton color='inherit' onClick={(e) => setAnchorEl(true)}>
+        <IconButton color='inherit' component={Link} to={'/all'} onClick={vibr}>
+          <GridViewIcon />
+        </IconButton>
+
+        <IconButton color='inherit' onClick={(e) => {vibr();setAnchorEl(true)}} >
           <SearchIcon />
         </IconButton>
 
@@ -79,10 +80,13 @@ const Appbar = () => {
         >
           <MenuItem sx={{ mr: 1, ml: 1, mb: 1 }}>
             <InputBase
-              sx={{ width: 350 }}
+              sx={{ width: 300, flexFlow: 1 }}
               placeholder="Search…"
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            <IconButton color='inherit' onClick={handleClose} size='small'>
+              <CloseIcon />
+            </IconButton>
           </MenuItem>
           <Divider />
 
@@ -90,18 +94,18 @@ const Appbar = () => {
             movielist && (movielist.data.movie_count > 0) ?
 
               movielist && movielist.data.movies.map(mov => (
-                <MenuItem x={{ mr: 1, ml: 1, mb: 1 }} component={Link} to={`/movie/${mov.id}`} >
+                <MenuItem x={{ mr: 1, ml: 1, mb: 1 }} component={Link} to={`/movie/${mov.id}`} onClick={handleClose}>
                   <Avatar
-                    alt="No Preview"
+                    alt="Movie cover"
                     src={mov.small_cover_image}
                     variant='rounded'
                     sx={{ width: 50, height: 70 }}
                   />
                   <Stack spacing={0.8} sx={{ ml: 2 }}>
-                    <Typography variant="body2" color="primary" sx={{ fontWeight: 'bold', fontSize: '16px' }}>
+                    <Typography variant="body2" color="primary" sx={{ fontWeight: 'bold', fontSize: '16px' }} maxWidth={260} noWrap>
                       {mov.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '11px' }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '11px' }} >
                       {mov.genres ? (mov.genres).toString() : ''}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '11px' }}>

@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import Grid from "@mui/material/Grid";
-import { Skeleton, Stack, Button, Container, Divider, Typography } from "@mui/material";
-import Card from "@mui/material/Card"
-import Box from "@mui/material/Box"
-import CardMedia from "@mui/material/CardMedia"
-import IconButton from "@mui/material/IconButton"
-import Rating from '@mui/material/Rating';
+import { Grid, Box, Card, CardMedia, IconButton, Rating, Menu, MenuItem, Skeleton, Stack, Button, Container, Divider, Typography } from "@mui/material";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import HighQualityOutlinedIcon from '@mui/icons-material/HighQualityOutlined';
 import FolderOpenOutlinedIcon from '@mui/icons-material/FolderOpenOutlined';
 import SuggestionsCard from './SuggestionsCard';
-import { Link } from "react-router-dom";
+
 
 
 const Movie = () => {
@@ -47,11 +41,26 @@ const Movie = () => {
 
 
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        vibr();
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const vibr = () => {
+        navigator.vibrate(47);
+    }
+
+
     return (
         <Container maxWidth="md" sx={{ mt: 7, mb: 7 }}>
 
             <Grid container spacing={3} >
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={12} md={6} lg={5}>
                     {
                         !moviedata &&
                         <Skeleton variant="rectangular" height={510} animation="wave" sx={{ borderRadius: 1 }} />
@@ -72,7 +81,7 @@ const Movie = () => {
                     }
                 </Grid>
 
-                <Grid item xs={7}>
+                <Grid item xs={12} sm={12} md={6} lg={7}>
                     {
                         !moviedata &&
                         <Stack spacing={1} >
@@ -90,35 +99,11 @@ const Movie = () => {
                                     <Skeleton variant="rectangular" height={20} width={230} animation="wave" sx={{ borderRadius: 1 }} />
                                 </Stack>
 
+                            </Box>
 
-                                <Grid container spacing={0.5}>
 
-                                    <Grid item xs sx={{ padding: 10 }}>
-
-                                        <Box sx={{ marginTop: 4, paddingLeft: 1, borderLeft: '3px solid #ccc ' }} >
-                                            <Stack spacing={1}>
-                                                <Skeleton variant="rectangular" height={20} width={100} animation="wave" sx={{ borderRadius: 1 }} />
-                                                <Skeleton variant="rectangular" height={20} width={100} animation="wave" sx={{ borderRadius: 1 }} />
-                                                <Skeleton variant="rectangular" height={20} width={100} animation="wave" sx={{ borderRadius: 1 }} />
-                                            </Stack>
-                                        </Box>
-
-                                    </Grid>
-
-                                    <Grid item xs sx={{ padding: 10 }}>
-
-                                        <Box sx={{ marginTop: 4, paddingLeft: 1, borderLeft: '3px solid #ccc ' }} >
-                                            <Stack spacing={1}>
-                                                <Skeleton variant="rectangular" height={20} width={100} animation="wave" sx={{ borderRadius: 1 }} />
-                                                <Skeleton variant="rectangular" height={20} width={100} animation="wave" sx={{ borderRadius: 1 }} />
-                                                <Skeleton variant="rectangular" height={20} width={100} animation="wave" sx={{ borderRadius: 1 }} />
-                                            </Stack>
-                                        </Box>
-
-                                    </Grid>
-
-                                </Grid>
-
+                            <Box sx={{ display: 'flex', justifyContent: 'space-around', pt: 7 }}>
+                                <Skeleton variant="rectangular" height={50} width={300} animation="wave" sx={{ borderRadius: 1 }} />
                             </Box>
 
                         </Stack>
@@ -164,28 +149,28 @@ const Movie = () => {
 
                             </Box>
 
+                            <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 7 }}>
+                                <Button size='large' sx={{ pr: 4, pl: 4 }} variant='outlined' onClick={handleClick} startIcon={<FileDownloadOutlinedIcon />}>Download on torrent</Button>
 
-                            <Grid container spacing={0.5}>
-                                {
-                                    moviedata && moviedata.data.movie.torrents.map(download => (
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    sx={{ minWidth: '500px' }}
+                                >
 
-                                        <Grid item xs sx={{ padding: 10 }}>
-
-                                            <Box sx={{ marginTop: 4, paddingLeft: 1, borderLeft: '3px solid #ccc ' }} >
+                                    {
+                                        moviedata && moviedata.data.movie.torrents.map(download => (
+                                            <MenuItem onClick={() => window.open(download.url, "_blank")}>
                                                 <Box sx={{ display: 'flex' }}><HighQualityOutlinedIcon sx={{ mr: 1 }} /> <Typography color='GrayText'>{download.quality} ({download.type})</Typography></Box>
-                                                <Box sx={{ display: 'flex' }}><FolderOpenOutlinedIcon sx={{ mr: 1 }} /> <Typography color='GrayText'>{download.size}</Typography></Box>
-                                                <Button variant="text" startIcon={<FileDownloadOutlinedIcon />} size='small' onClick={() => window.open(download.url, "_blank")} sx={{ mt: 1 }}> Download</Button>
-                                            </Box>
+                                                <Box sx={{ display: 'flex' }}><FolderOpenOutlinedIcon sx={{ mr: 1, ml: 2 }} /> <Typography color='GrayText'>{download.size}</Typography></Box>
+                                            </MenuItem>
+                                        ))
+                                    }
 
-                                        </Grid>
-                                    ))
+                                </Menu>
+                            </Box>
 
-                                }
-                            </Grid>
-
-
-
-                            {/* <Typography variant='p' color='GrayText' sx={{textAlign:"justify"}}>&nbsp;&nbsp;&nbsp;&nbsp;{moviedata.data.movie.description_full}</Typography> */}
                         </Box>
                     }
 
@@ -218,12 +203,12 @@ const Movie = () => {
 
                     <Typography variant='h5' color='GrayText' sx={{ mt: 2, mb: 3 }}>Suggestions for you</Typography>
 
-                    <Grid container spacing={2}>
+                    <Grid container spacing={0}>
 
                         {
 
                             suggestions && (suggestions['data']['movies']).map(mov =>
-                                <Grid item xs={3}>
+                                <Grid item xs={6} sm={6} md={3} lg={3} sx={{ display: 'flex', justifyContent: 'space-around', padding: 0.8 }} >
                                     <SuggestionsCard moviedata={mov} />
                                 </Grid>
                             )
@@ -232,8 +217,8 @@ const Movie = () => {
 
                         {
                             !suggestions && [...Array(4).keys()].map(m =>
-                                <Grid item xs={3}>
-                                    <Skeleton variant="rectangular" height={350} animation="wave" sx={{ borderRadius: 1, mt: 3 }} />
+                                <Grid item xs={6} sm={6} md={3} lg={3} sx={{ padding: 0.8 }}>
+                                    <Skeleton variant="rectangular" height={350} animation="wave" sx={{ borderRadius: 1 }} />
                                 </Grid>
                             )
                         }
